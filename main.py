@@ -1,5 +1,10 @@
-from src.bot import bot
 from src.handlers import *
+from src.model import metadata
+from src.repository import Repo
 
 
-bot.run_forever()
+if __name__ == "__main__":
+    repo = Repo()
+    metadata.create_all(repo.engine)
+
+    bot.run_forever()
