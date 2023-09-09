@@ -10,8 +10,8 @@ class Settings:
     db_url = _env("DB_URL")
 
     weather_api_key = _env("WEATHER_API")
-    countri_id_url = ('https://api.gismeteo.net/v2/'
-                      'search/cities/?lang=ru'
-                      '&query={location}')
-    weather_url = ('https://api.gismeteo.net/v2/weather/forecast/aggregate/'
-                   '{sity_id}/?days={days}')
+
+    weather_url = "https://api.weather.yandex.ru/v2/forecast?"
+
+    map_api_key = _env("MAP_API")
+    map_url = "https://geocode-maps.yandex.ru/1.x?"

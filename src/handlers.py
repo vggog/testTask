@@ -4,6 +4,7 @@ from src.bot import bot
 from src.states import StartState, TodayTomorrowState
 from src.keyboards import get_menu_button, get_two_buttons_inline_keyboard
 from src.repository import Repo
+from src.weather_service import WeatherService
 
 
 @bot.on.private_message(text="Начать")
@@ -50,7 +51,6 @@ async def weather_first_step(message: Message):
 
 @bot.on.private_message(state=TodayTomorrowState.WHEN)
 async def get_weather(message: Message):
-    print("Залез")
     repo = Repo()
 
     user_info = repo.get_user(user_id=message.from_id)
@@ -60,11 +60,12 @@ async def get_weather(message: Message):
         return
 
     weather_when = message.text
-    sity = user_info[1]
+    city = user_info[1]
+    service = WeatherService(city)
 
     if weather_when == "Сегодня":
-        await message.answer(f"Погода в {sity} сегодня.")
+        await message.answer(service.get_today_weather())
     elif weather_when == "Завтра":
-        await message.answer(f"Погода в {sity} завтра.")
+        await message.answer(service.get_yeasterday_weather())
     else:
         await message.answer("Неверный ввод.")
