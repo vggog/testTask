@@ -5,6 +5,7 @@ from src.states import StartState, TodayTomorrowState
 from src.keyboards import get_menu_button, get_two_buttons_inline_keyboard
 from src.repository import Repo
 from src.weather_service import WeatherService
+from src.rate_service import RateServices
 
 
 @bot.on.private_message(text="Начать")
@@ -69,3 +70,9 @@ async def get_weather(message: Message):
         await message.answer(service.get_yeasterday_weather())
     else:
         await message.answer("Неверный ввод.")
+
+
+@bot.on.private_message(text="Валюта")
+async def currencies(message: Message):
+    service = RateServices()
+    await message.answer(service.get_text())

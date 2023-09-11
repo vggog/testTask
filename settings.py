@@ -10,8 +10,10 @@ class Settings:
     db_url = _env("DB_URL")
 
     weather_api_key = _env("WEATHER_API")
-
     weather_url = "https://api.weather.yandex.ru/v2/forecast?"
 
     map_api_key = _env("MAP_API")
     map_url = "https://geocode-maps.yandex.ru/1.x?"
+
+    currencies_api_key = _env("CUR_API")
+    currencies_url = "http://api.exchangeratesapi.io/v1/latest"
