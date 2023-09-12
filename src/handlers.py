@@ -23,10 +23,10 @@ async def start(message: Message):
 
 
 @bot.on.private_message(state=StartState.SITY)
-async def upload_sity(message: Message):
+async def create_update_city(message: Message):
     repo = Repo()
 
-    repo.add_user(
+    repo.create_or_update(
         message.from_id,
         message.text
     )
@@ -35,6 +35,7 @@ async def upload_sity(message: Message):
         "Ваш город сохранён.",
         keyboard=get_menu_button(),
     )
+    await bot.state_dispenser.delete(message.peer_id)
 
 
 @bot.on.private_message(text="Погода")
@@ -71,8 +72,16 @@ async def get_weather(message: Message):
     else:
         await message.answer("Неверный ввод.")
 
+    await bot.state_dispenser.delete(message.peer_id)
+
 
 @bot.on.private_message(text="Валюта")
 async def currencies(message: Message):
     service = RateServices()
     await message.answer(service.get_text())
+
+
+@bot.on.private_message(text="Сменить город")
+async def change_city(message: Message):
+    await message.answer("Введите город: ")
+    await bot.state_dispenser.set(message.peer_id, StartState.SITY)
