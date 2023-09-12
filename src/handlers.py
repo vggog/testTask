@@ -10,27 +10,31 @@ from src.rate_service import RateServices
 
 @bot.on.private_message(text="Начать")
 async def start(message: Message):
+    """
+    Handler для команды "Начать."
+    """
     repo = Repo()
     if repo.get_user(message.from_id):
         await message.answer(
             "Приветствую))",
             keyboard=get_menu_button(),
         )
-        return
+    else:
+        await message.answer("Введите ваш город:")
+        await bot.state_dispenser.set(message.peer_id, StartState.CITY)
 
-    await message.answer("Введите ваш город:")
-    await bot.state_dispenser.set(message.peer_id, StartState.SITY)
 
-
-@bot.on.private_message(state=StartState.SITY)
+@bot.on.private_message(state=StartState.CITY)
 async def create_update_city(message: Message):
+    """
+    Handler для state'а для создания записи о юзере или
+    обновления города пользоватяля.
+    """
     repo = Repo()
-
     repo.create_or_update(
         message.from_id,
         message.text
     )
-
     await message.answer(
         "Ваш город сохранён.",
         keyboard=get_menu_button(),
@@ -40,6 +44,9 @@ async def create_update_city(message: Message):
 
 @bot.on.private_message(text="Погода")
 async def weather_first_step(message: Message):
+    """
+    Handler для получения дня для прогноза погоды(Сегодня, Завтра).
+    """
     await message.answer(
         "На какой день вам нужен прогноз погоды?",
         keyboard=get_two_buttons_inline_keyboard(
@@ -53,6 +60,9 @@ async def weather_first_step(message: Message):
 
 @bot.on.private_message(state=TodayTomorrowState.WHEN)
 async def get_weather(message: Message):
+    """
+    Handler для вывода пользователю сообщения о прогнозе погоды.
+    """
     repo = Repo()
 
     user_info = repo.get_user(user_id=message.from_id)
@@ -77,11 +87,17 @@ async def get_weather(message: Message):
 
 @bot.on.private_message(text="Валюта")
 async def currencies(message: Message):
+    """
+    Handler для вывода пользователю курса 5-ти валют.
+    """
     service = RateServices()
     await message.answer(service.get_text())
 
 
 @bot.on.private_message(text="Сменить город")
 async def change_city(message: Message):
+    """
+    Handler для смены города юзера.
+    """
     await message.answer("Введите город: ")
-    await bot.state_dispenser.set(message.peer_id, StartState.SITY)
+    await bot.state_dispenser.set(message.peer_id, StartState.CITY)

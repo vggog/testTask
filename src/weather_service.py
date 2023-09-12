@@ -20,7 +20,7 @@ class WeatherService:
             params=params,
         )
         resp = resp.json()
-        lat_lon = resp["response"]["GeoObjectCollection"]["featureMember"][1]["GeoObject"]["Point"]["pos"]
+        lat_lon = resp["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]["Point"]["pos"]
         return lat_lon.split(" ")
 
     def _get_weather_from_api(self) -> dict | None:

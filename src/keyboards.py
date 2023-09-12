@@ -18,12 +18,10 @@ def get_two_buttons_inline_keyboard(
 
 def get_menu_button() -> Keyboard:
     """
-    Меню с четырьмя кнопка: Погода, Пробка, Афиша, Валюта.
+    Меню с четырьмя кнопка: Погода, Валюта.
     """
     return (
         Keyboard()
         .add(Text("Погода"))
-        .add(Text("Пробка"))
-        .add(Text("Афиша"))
         .add(Text("Валюта"))
     )
